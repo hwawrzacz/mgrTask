@@ -1,6 +1,7 @@
 package com.wawrzacz.mgrtaskbackend.Model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="users")
@@ -11,13 +12,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(unique=true)
     private String login;
     private String firstName;
     private String lastName;
     private String password;
 
-    private Iterable<Task> createdTasks;
-    private Iterable<Task> assignedTasks;
+    @OneToMany(mappedBy = "author")
+    private List<Task> createdTasks;
+    @OneToMany(mappedBy = "receiver")
+    private List<Task> assignedTasks;
     //endregion
 
     //region Getters and setters
@@ -36,11 +40,11 @@ public class User {
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
 
-    public Iterable<Task> getCreatedTasks() { return createdTasks; }
-    public void setCreatedTasks(Iterable<Task> createdTasks) { this.createdTasks = createdTasks; }
+    public List<Task> getCreatedTasks() { return createdTasks; }
+    public void setCreatedTasks(List<Task> createdTasks) { this.createdTasks = createdTasks; }
 
-    public Iterable<Task> getAssignedTasks() { return assignedTasks; }
-    public void setAssignedTasks(Iterable<Task> assignedTasks) { this.assignedTasks = assignedTasks; }
+    public List<Task> getAssignedTasks() { return assignedTasks; }
+    public void setAssignedTasks(List<Task> assignedTasks) { this.assignedTasks = assignedTasks; }
     //endregion
 
     //region Constructors

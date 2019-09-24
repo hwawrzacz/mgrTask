@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="usersTasks")
-public class usersTasks {
+public class UsersTasks {
 
     //region Fields
     @Id
@@ -27,7 +27,6 @@ public class usersTasks {
     //endregion
 
     //region Constructors
-    public usersTasks() {
-    }
+    public UsersTasks() {}
     //endregion
 }

@@ -1,5 +1,6 @@
 package com.wawrzacz.mgrtaskbackend.Model;
 
+
 import javax.persistence.*;
 
 @Entity
@@ -11,13 +12,16 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private String title;
+    private String name;
     private String category;
     private String description;
-    private User author;
-    private Iterable<User> intendedFor;
     private String creationDate;
     private String dutyDate;
+
+    @ManyToOne
+    private User author;
+    @ManyToOne
+    private User receiver;
     //endregion
 
     // region Getters and setters
@@ -27,8 +31,8 @@ public class Task {
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
@@ -37,8 +41,8 @@ public class Task {
 
     public void setAuthor(User author) { this.author = author; }
 
-    public Iterable<User> getIntendedFor() { return intendedFor; }
-    public void setIntendedFor(Iterable<User> intendedFor) { this.intendedFor = intendedFor; }
+    public User getIntendedFor() { return receiver; }
+    public void setIntendedFor(User intendedFor) { this.receiver = intendedFor; }
 
     public String getCreationDate() { return creationDate; }
     public void setCreationDate(String creationDate) { this.creationDate = creationDate; }
