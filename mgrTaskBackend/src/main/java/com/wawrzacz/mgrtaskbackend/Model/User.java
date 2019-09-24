@@ -12,7 +12,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(unique=true)
+    @Column(unique = true)
     private String login;
     private String firstName;
     private String lastName;
@@ -48,8 +48,29 @@ public class User {
     //endregion
 
     //region Constructors
-    public User() {
+    public User() { }
+
+    public User(long id, String login, String firstName, String lastName, String password,
+                List<Task> createdTasks, List<Task> assignedTasks) {
+        this.id = id;
+        this.login = login;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.createdTasks = createdTasks;
+        this.assignedTasks = assignedTasks;
     }
+
+    public User(String login, String firstName, String lastName, String password,
+                List<Task> createdTasks, List<Task> assignedTasks) {
+        this.login = login;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.createdTasks = createdTasks;
+        this.assignedTasks = assignedTasks;
+    }
+
     //endregion
 }
 

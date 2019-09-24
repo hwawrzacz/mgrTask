@@ -2,6 +2,7 @@ package com.wawrzacz.mgrtaskbackend.Model;
 
 
 import javax.persistence.*;
+import java.util.GregorianCalendar;
 
 @Entity
 @Table(name="tasks")
@@ -52,7 +53,29 @@ public class Task {
     //endregion
 
     //region Constructors
-    public Task() {
+    public Task() { }
+
+    public Task(long id, String name, String category, String description, String creationDate, String dutyDate,
+                User author, User receiver) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.description = description;
+        this.creationDate = creationDate;
+        this.dutyDate = dutyDate;
+        this.author = author;
+        this.receiver = receiver;
+    }
+
+    public Task(String name, String category, String description, String creationDate, String dutyDate,
+                User author, User receiver) {
+        this.name = name;
+        this.category = category;
+        this.description = description;
+        this.creationDate = creationDate;
+        this.dutyDate = dutyDate;
+        this.author = author;
+        this.receiver = receiver;
     }
     //endregion
 }
