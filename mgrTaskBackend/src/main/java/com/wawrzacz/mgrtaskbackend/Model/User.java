@@ -1,5 +1,9 @@
 package com.wawrzacz.mgrtaskbackend.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -19,8 +23,13 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "author")
+    @JsonBackReference(value = "author")
+    @JsonIgnore
     private List<Task> createdTasks;
+
     @OneToMany(mappedBy = "receiver")
+    @JsonBackReference(value = "receiver")
+    @JsonIgnore
     private List<Task> assignedTasks;
     //endregion
 
@@ -50,16 +59,6 @@ public class User {
     //region Constructors
     public User() { }
 
-    public User(long id, String login, String firstName, String lastName, String password,
-                List<Task> createdTasks, List<Task> assignedTasks) {
-        this.id = id;
-        this.login = login;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-        this.createdTasks = createdTasks;
-        this.assignedTasks = assignedTasks;
-    }
 
     public User(String login, String firstName, String lastName, String password,
                 List<Task> createdTasks, List<Task> assignedTasks) {
@@ -71,6 +70,16 @@ public class User {
         this.assignedTasks = assignedTasks;
     }
 
+//    public User(long id, String login, String firstName, String lastName, String password,
+//                List<Task> createdTasks, List<Task> assignedTasks) {
+//        this.id = id;
+//        this.login = login;
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.password = password;
+//        this.createdTasks = createdTasks;
+//        this.assignedTasks = assignedTasks;
+//    }
     //endregion
 }
 
