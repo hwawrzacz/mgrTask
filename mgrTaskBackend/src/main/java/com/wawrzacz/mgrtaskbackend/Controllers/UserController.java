@@ -11,6 +11,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
+
+    //region Fields
+    String userUpdateStatus = "Empty";
+    //endregion
+
     @Autowired
     private UserRepository userRepository;
 
@@ -21,11 +26,12 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public void addUser(@RequestBody User newUser) {
+    public String addUser(@RequestBody User newUser) {
         if (!loginExists(newUser.getLogin())) {
-            saveUser(newUser);
+            attemptSaveUser(newUser);
         }
-        System.out.println("User already exists");
+        userUpdateStatus = "User already exists";
+        return getUserUpdateStatus();
     }
 
     @GetMapping("/{login}")
@@ -43,13 +49,17 @@ public class UserController {
 //        return userRepository.findAllByLoginOrFirstNameOrLastNameContaining(name);
 //    }
 
-    private void saveUser(User newUser) {
+    private void attemptSaveUser(User newUser) {
         try {
             userRepository.save(newUser);
-            System.out.println("User saved");
+            userUpdateStatus = "User saved";
         } catch (Exception exc) {
-            System.out.println("User cannot be saved. Exception: " + exc.getMessage());
+            userUpdateStatus = "User could not be saved. Exception: " + exc.getMessage();
         }
+    }
+
+    private String getUserUpdateStatus() {
+        return userUpdateStatus;
     }
 
     private boolean loginExists(String login) {
