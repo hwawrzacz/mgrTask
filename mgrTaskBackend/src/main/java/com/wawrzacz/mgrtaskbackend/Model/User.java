@@ -23,13 +23,11 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "author")
-    @JsonManagedReference(value = "author")
-    @JsonIgnore
+    @JsonManagedReference(value = "authorReference")
     private List<Task> createdTasks;
 
     @OneToMany(mappedBy = "receiver")
-    @JsonManagedReference(value = "receiver")
-    @JsonIgnore
+    @JsonManagedReference(value = "receiverReference")
     private List<Task> assignedTasks;
     //endregion
 
@@ -49,26 +47,25 @@ public class User {
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
 
-    public List<Task> getCreatedTasks() { return createdTasks; }
-    public void setCreatedTasks(List<Task> createdTasks) { this.createdTasks = createdTasks; }
-
-    public List<Task> getAssignedTasks() { return assignedTasks; }
-    public void setAssignedTasks(List<Task> assignedTasks) { this.assignedTasks = assignedTasks; }
+//    public List<Task> getCreatedTasks() { return createdTasks; }
+//    public void setCreatedTasks(List<Task> createdTasks) { this.createdTasks = createdTasks; }
+//
+//    public List<Task> getAssignedTasks() { return assignedTasks; }
+//    public void setAssignedTasks(List<Task> assignedTasks) { this.assignedTasks = assignedTasks; }
     //endregion
 
     //region Constructors
     public User() { }
 
-
-    public User(String login, String firstName, String lastName, String password,
-                List<Task> createdTasks, List<Task> assignedTasks) {
-        this.login = login;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-        this.createdTasks = createdTasks;
-        this.assignedTasks = assignedTasks;
-    }
+//    public User(String login, String firstName, String lastName, String password,
+//                List<Task> createdTasks, List<Task> assignedTasks) {
+//        this.login = login;
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.password = password;
+//        this.createdTasks = createdTasks;
+//        this.assignedTasks = assignedTasks;
+//    }
 
     public User(long id, String login, String firstName, String lastName, String password,
                 List<Task> createdTasks, List<Task> assignedTasks) {
@@ -79,6 +76,14 @@ public class User {
         this.password = password;
         this.createdTasks = createdTasks;
         this.assignedTasks = assignedTasks;
+    }
+
+    public User(long id, String login, String firstName, String lastName, String password) {
+        this.id = id;
+        this.login = login;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
     }
     //endregion
 }

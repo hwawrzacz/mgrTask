@@ -24,13 +24,11 @@ public class Task {
     private Date expirationDate;
 
     @ManyToOne
-    //@JsonIgnore
-    @JsonBackReference(value = "author")
+    @JsonBackReference(value = "authorReference")
     private User author;
 
     @ManyToOne
-    //@JsonIgnore
-    @JsonBackReference(value = "receiver")
+    @JsonBackReference(value = "receiverReference")
     private User receiver;
     //endregion
 

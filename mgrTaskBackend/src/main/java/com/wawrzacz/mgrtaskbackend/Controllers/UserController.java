@@ -1,14 +1,18 @@
 package com.wawrzacz.mgrtaskbackend.Controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wawrzacz.mgrtaskbackend.Model.Task;
 import com.wawrzacz.mgrtaskbackend.Model.User;
 import com.wawrzacz.mgrtaskbackend.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.List;
 
-@CrossOrigin
 @RestController
+@CrossOrigin
 @RequestMapping("/users")
 public class UserController {
 
@@ -19,19 +23,33 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping("/hello")
-    public String printHelloMessage() {
-        System.out.println("Hello message");
-        return "Hello";
-    }
+    @GetMapping("/test")
+    public String test() {
+            String json = "";
+            User user = new User(1, "Andrzej", "Jak", "Ajak","sd");
+            Task task = new Task("Hehe", "qqwe", "sd", new Date(12341234), new Date(234234123), user, user);
 
-    @PostMapping("/add")
+            ObjectMapper mapper = new ObjectMapper();
+
+            try {
+                json = mapper.writeValueAsString(task);
+                System.out.println("JSON = " + json);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+
+            return json;
+        }
+
+    @PostMapping(value = "/add")
     public String addUser(@RequestBody User newUser) {
         if (!loginExists(newUser.getLogin())) {
             attemptSaveUser(newUser);
+        } else {
+            userUpdateStatus = "User already exists";
         }
-        userUpdateStatus = "User already exists";
-        return getUserUpdateStatus();
+
+        return userUpdateStatus;
     }
 
     @GetMapping("/{login}")
@@ -56,10 +74,6 @@ public class UserController {
         } catch (Exception exc) {
             userUpdateStatus = "User could not be saved. Exception: " + exc.getMessage();
         }
-    }
-
-    private String getUserUpdateStatus() {
-        return userUpdateStatus;
     }
 
     private boolean loginExists(String login) {
