@@ -1,0 +1,11 @@
+TODO
+Backend
+	Auto password encryption
+
+Frontend
+	Create project
+	Do the project
+
+
+CHANGELOG
+	Basic API

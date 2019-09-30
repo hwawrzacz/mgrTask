@@ -17,39 +17,18 @@ import java.util.List;
 public class UserController {
 
     //region Fields
-    String userUpdateStatus = "Empty";
-    //endregion
+
+    private String userUpdateStatus = "Empty";
 
     @Autowired
     private UserRepository userRepository;
+    //endregion
 
-    @GetMapping("/test")
-    public String test() {
-            String json = "";
-            User user = new User(1, "Andrzej", "Jak", "Ajak","sd");
-            Task task = new Task("Hehe", "qqwe", "sd", new Date(12341234), new Date(234234123), user, user);
+    //region Get methods
 
-            ObjectMapper mapper = new ObjectMapper();
-
-            try {
-                json = mapper.writeValueAsString(task);
-                System.out.println("JSON = " + json);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-
-            return json;
-        }
-
-    @PostMapping(value = "/add")
-    public String addUser(@RequestBody User newUser) {
-        if (!loginExists(newUser.getLogin())) {
-            attemptSaveUser(newUser);
-        } else {
-            userUpdateStatus = "User already exists";
-        }
-
-        return userUpdateStatus;
+    @GetMapping(value = "/all")
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     @GetMapping("/{login}")
@@ -62,11 +41,48 @@ public class UserController {
         return userRepository.findById(id);
     }
 
-//    @GetMapping("/search/{name}")
-//    public List<User> findUserByName(@PathVariable String name){
-//        return userRepository.findAllByLoginOrFirstNameOrLastNameContaining(name);
-//    }
+    @GetMapping("/search/{name}")
+    public List<User> findUserByName(@PathVariable String name){
+        return userRepository.findAllByFirstNameContaining(name);
+    }
+    //endregion
 
+    //region Add, update, delete methods
+
+    @PostMapping("/add")
+    public String addUser(@RequestBody User newUser) {
+        if (!loginExists(newUser.getLogin())) {
+            attemptSaveUser(newUser);
+        } else {
+            userUpdateStatus = "User already exists";
+        }
+
+        return userUpdateStatus;
+    }
+
+    @PutMapping("/update")
+    public String updateUser(@RequestBody User updatedUser) {
+        attemptSaveUser(updatedUser);
+        return userUpdateStatus;
+    }
+
+    @DeleteMapping("/delete")
+    public String deleteUser(@RequestBody User sadUser) {
+        attemptDeleteUser(sadUser);
+        return userUpdateStatus;
+    }
+
+    private void attemptDeleteUser(User sadUser) {
+        try {
+            userRepository.delete(sadUser);
+            userUpdateStatus = "User deleted";
+        } catch (Exception exc) {
+            userUpdateStatus = "User could not be deleted. Exception: " + exc.getMessage();
+        }
+    }
+    //endregion
+
+    //region IDK how to call those functions. Helpers, maybe...
     private void attemptSaveUser(User newUser) {
         try {
             userRepository.save(newUser);
@@ -79,4 +95,5 @@ public class UserController {
     private boolean loginExists(String login) {
         return (userRepository.findByLogin(login) != null);
     }
+    //endregion
 }

@@ -24,10 +24,12 @@ public class User {
 
     @OneToMany(mappedBy = "author")
     @JsonManagedReference(value = "authorReference")
+    @JsonIgnore
     private List<Task> createdTasks;
 
     @OneToMany(mappedBy = "receiver")
     @JsonManagedReference(value = "receiverReference")
+    @JsonIgnore
     private List<Task> assignedTasks;
     //endregion
 
@@ -67,16 +69,16 @@ public class User {
 //        this.assignedTasks = assignedTasks;
 //    }
 
-    public User(long id, String login, String firstName, String lastName, String password,
-                List<Task> createdTasks, List<Task> assignedTasks) {
-        this.id = id;
-        this.login = login;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-        this.createdTasks = createdTasks;
-        this.assignedTasks = assignedTasks;
-    }
+//    public User(long id, String login, String firstName, String lastName, String password,
+//                List<Task> createdTasks, List<Task> assignedTasks) {
+//        this.id = id;
+//        this.login = login;
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.password = password;
+//        this.createdTasks = createdTasks;
+//        this.assignedTasks = assignedTasks;
+//    }
 
     public User(long id, String login, String firstName, String lastName, String password) {
         this.id = id;
