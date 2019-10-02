@@ -25,8 +25,7 @@ public class UserController {
     //endregion
 
     //region Get methods
-
-    @GetMapping(value = "/all")
+    @GetMapping("/all")
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -48,7 +47,6 @@ public class UserController {
     //endregion
 
     //region Add, update, delete methods
-
     @PostMapping("/add")
     public String addUser(@RequestBody User newUser) {
         if (!loginExists(newUser.getLogin())) {
