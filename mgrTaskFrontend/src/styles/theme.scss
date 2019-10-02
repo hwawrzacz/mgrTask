@@ -1,0 +1,8 @@
+@import '@angular/material/theming';
+@import 'pallete.sass';
+
+@include mat-core();
+
+$light-theme: mat-light-theme($primary-color, $accent-color);
+
+@include angular-material-theme($light-theme);
