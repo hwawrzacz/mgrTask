@@ -1,7 +1,6 @@
 package com.wawrzacz.mgrtaskbackend.Model;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -19,16 +18,16 @@ public class Task {
 
     private String name;
     private String category;
+    private String priority;
+    private String status;
     private String description;
     private Date creationDate;
     private Date expirationDate;
 
     @ManyToOne
-    @JsonBackReference(value = "authorReference")
     private User author;
 
     @ManyToOne
-    @JsonBackReference(value = "receiverReference")
     private User receiver;
     //endregion
 
@@ -38,6 +37,12 @@ public class Task {
 
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
+
+    public String getPriority() { return priority; }
+    public void setPriority(String priority) { this.priority = priority; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
@@ -50,22 +55,24 @@ public class Task {
     public void setAuthor(User author) { this.author = author; }
 
     public User getReceiver() { return receiver; }
-    public void setReceiver(User intendedFor) { this.receiver = intendedFor; }
+    public void setReceiver(User receiver) { this.receiver = receiver; }
 
     public Date getCreationDate() { return creationDate; }
     public void setCreationDate(Date creationDate) { this.creationDate = creationDate; }
 
     public Date getExpirationDate() { return expirationDate; }
-    public void setExpirationDate(Date dutyDate) { this.expirationDate = dutyDate; }
+    public void setExpirationDate(Date expirationDate) { this.expirationDate = expirationDate; }
     //endregion
 
     //region Constructors
     public Task() { }
 
-    public Task(String name, String category, String description, Date creationDate, Date expirationDate,
-                User author, User receiver) {
+    public Task(String name, String category, String status, String priority, String description,
+                Date creationDate, Date expirationDate, User author, User receiver) {
         this.name = name;
         this.category = category;
+        this.status = status;
+        this.priority = priority;
         this.description = description;
         this.creationDate = creationDate;
         this.expirationDate = expirationDate;
@@ -73,11 +80,13 @@ public class Task {
         this.receiver = receiver;
     }
 
-    public Task(long id, String name, String category, String description, Date creationDate, Date expirationDate,
-                User author, User receiver) {
+    public Task(long id, String name, String category, String status, String priority, String description,
+                Date creationDate, Date expirationDate, User author, User receiver) {
         this.id = id;
         this.name = name;
         this.category = category;
+        this.status = status;
+        this.priority = priority;
         this.description = description;
         this.creationDate = creationDate;
         this.expirationDate = expirationDate;
@@ -87,4 +96,3 @@ public class Task {
     //endregion
 }
 
-    

@@ -1,6 +1,7 @@
 package com.wawrzacz.mgrtaskbackend.Controllers;
 
 import com.wawrzacz.mgrtaskbackend.Model.Task;
+import com.wawrzacz.mgrtaskbackend.Model.UpdateStatus;
 import com.wawrzacz.mgrtaskbackend.Model.User;
 import com.wawrzacz.mgrtaskbackend.Repositories.TaskRepository;
 import com.wawrzacz.mgrtaskbackend.Repositories.UserRepository;
@@ -15,7 +16,7 @@ import java.util.List;
 public class TaskController {
 
     //region Fields
-    String taskUpdateStatus = "Empty";
+    UpdateStatus taskUpdateStatus = UpdateStatus.STATUS_NOT_SET;
 
     @Autowired
     TaskRepository taskRepository;
@@ -35,15 +36,15 @@ public class TaskController {
         return taskRepository.findById(id);
     }
 
-    @GetMapping("/author/{id}")
-    public List<Task> getTaskByAuthor(@PathVariable long id) {
-        User user = userRepository.findById(id);
+    @GetMapping("/author/{login}")
+    public List<Task> getTaskByAuthor(@PathVariable String login) {
+        User user = userRepository.findByLogin(login);
         return taskRepository.findAllByAuthor(user);
     }
 
-    @GetMapping("/receiver/{id}")
-    public List<Task> getTaskByReceiver(@PathVariable long id) {
-        User user = userRepository.findById(id);
+    @GetMapping("/receiver/{login}")
+    public List<Task> getTaskByReceiver(@PathVariable String login) {
+        User user = userRepository.findByLogin(login);
         return taskRepository.findAllByReceiver(user);
     }
 
@@ -60,14 +61,24 @@ public class TaskController {
 
     //region Add, update, delete methods
     @PostMapping("/add")
-    public String addUser(@RequestBody Task task) {
-        attemptSaveTask(task);
+    public UpdateStatus addTask(@RequestBody Task newTask) {
+        if (!taskExists(newTask.getId())) {
+            attemptSaveTask(newTask);
+        } else {
+            taskUpdateStatus = UpdateStatus.ALREADY_EXISTS;
+        }
         return taskUpdateStatus;
     }
 
     @PutMapping("/update")
-    public String updateUser(@RequestBody Task task) {
+    public UpdateStatus updateTask(@RequestBody Task task) {
         attemptSaveTask(task);
+        return taskUpdateStatus;
+    }
+
+    @PutMapping("/delete")
+    public UpdateStatus deleteTask(@RequestBody Task task) {
+        taskRepository.delete(task);
         return taskUpdateStatus;
     }
     //endregion
@@ -76,10 +87,14 @@ public class TaskController {
     private void attemptSaveTask(Task task) {
         try{
             taskRepository.save(task);
-            taskUpdateStatus = "Task added";
+            taskUpdateStatus = UpdateStatus.SAVE_OK;
         } catch (Exception exc) {
-            taskUpdateStatus = "Task could not be saved. Exception: " + exc.getMessage();
+            taskUpdateStatus = UpdateStatus.SAVE_FAILED;
         }
+    }
+
+    private boolean taskExists(long id) {
+        return taskRepository.findById(id) != null;
     }
     //endregion
 }
